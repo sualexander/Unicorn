@@ -47,19 +47,16 @@ public class Player : MonoBehaviour
     {
         movementInput = value.Get<Vector2>().x;
     }
-
     void OnJump()
     {
         jumpTime = jumpBuffer;
     }
-
     void OnFlip()
     {
         if (isFlipping) return;
         flipped = !flipped;
         rb.gravityScale *= -1;
         StartCoroutine(FlipPlayer());
-
         IEnumerator FlipPlayer()
         {
             isFlipping = true;
@@ -75,5 +72,10 @@ public class Player : MonoBehaviour
             transform.rotation = target;
             isFlipping = false;
         }
+    }
+
+    void OnInteract()
+    {
+        
     }
 }

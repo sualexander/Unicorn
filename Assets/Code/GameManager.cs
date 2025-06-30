@@ -20,12 +20,13 @@ public class GameManager : MonoBehaviour
             yield return null;
             if (SceneView.lastActiveSceneView) InitScene(SceneView.lastActiveSceneView.camera.transform.position.x);
             else {
-                Debug.Log("uh oh");
+                Debug.LogWarning("uh oh");
                 InitScene(0);
             }
         }
         StartCoroutine(WaitForSceneView());
 #else
+        InitScene(0);
         //spawn point object
 #endif
     }
@@ -42,5 +43,7 @@ public class GameManager : MonoBehaviour
     }
 
     void Update()
-    {}
+    {
+        
+    }
 }

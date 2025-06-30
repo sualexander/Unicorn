@@ -56,6 +56,8 @@ public class LevelEditor
                     Transform[] transforms = baseTransform.GetComponentsInChildren<Transform>(true);
                     foreach (Transform transform in transforms) 
                     {
+                        if (!transform.gameObject.GetComponent<SpriteRenderer>()) continue;
+                        
                         Doodad doodad = transform.gameObject.GetComponent<Doodad>();
                         if (transform.position.y > 0) {
                             if (doodad && !doodad.isFuture) {
@@ -81,6 +83,14 @@ public class LevelEditor
                     LevelSettings settings = obj as LevelSettings;
                     UnicornEditor.Update(settings.isMirrored);
                     ToggleMirrorInternal(settings.isMirrored);
+                } else {
+                    Component component = obj as Component;
+                    Doodad doodad = component.gameObject.GetComponent<Doodad>();
+                    if (doodad && !doodad.isFuture) {
+                        Object.DestroyImmediate(doodad.complement);
+                        CreateFuture(component.gameObject);
+                        Debug.Log("Updated " + component.gameObject.name + " for " + component.name);
+                    }
                 }
                 break;
             case ObjectChangeKind.CreateGameObjectHierarchy:
@@ -121,7 +131,7 @@ public class LevelEditor
                     if (single.isFuture) {
                         Object.DestroyImmediate(single.gameObject);
                     } else {
-                        Debug.Log("don't do that man");
+                        Debug.LogWarning("don't do that man");
                     }
                 }
                 break;
@@ -187,7 +197,7 @@ public class LevelEditor
         future.transform.position = new Vector3(future.transform.position.x, future.transform.position.y * -1, future.transform.position.z);
         future.transform.localScale *= -1;
 
-        Color color = new Color(0.6f, 0.7f, 1);
+        Color color = new Color(0.6f, 0.6f, 0.6f);
         future.GetComponent<SpriteRenderer>().color = color;
     }
 
