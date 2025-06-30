@@ -11,13 +11,12 @@ public class LevelEditor
 {
     static LevelEditor()
     {
-        if (EditorApplication.isPlayingOrWillChangePlaymode) return;
         EditorSceneManager.sceneOpened -= OnSceneOpened;
         EditorSceneManager.sceneOpened += OnSceneOpened;
         EditorApplication.playModeStateChanged -= OnPlayModeChanged;
         EditorApplication.playModeStateChanged += OnPlayModeChanged;
 
-        InitEditor();
+        if (!EditorApplication.isPlayingOrWillChangePlaymode) InitEditor();
     }
 
     static void OnSceneOpened(Scene scene, OpenSceneMode mode)
@@ -251,7 +250,7 @@ public class UnicornEditor : EditorWindow
             Window = GetWindow<UnicornEditor>("Unicorn Editor");
             Debug.Log("Creating Unicorn Editor window");
         }
-        else if (!Window) Window = Resources.FindObjectsOfTypeAll<UnicornEditor>()[0];
-        Window.Repaint();
+        else if (Window) Window.Repaint();
+        //Window = Resources.FindObjectsOfTypeAll<UnicornEditor>()[0]; 
     }
 }
